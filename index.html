@@ -49,7 +49,7 @@
               <div id="advancedSelectedFilterTags-container"></div>
     
               <div id="advancedFilters-container">
-                <menu id="advancedFilters-list"></menu>
+                <menu id="advancedFilters-list" class="flex gap-6 pb-6"></menu>
               </div>
             </div>
           </form>
@@ -57,10 +57,12 @@
           <div id="noResults">
             <p></p>
           </div>
-          <div id="recipes-container" class="grid gap-10 grid-cols-1 md:grid-cols-2 xl:grid-cols-3"></div>
+          <div id="resultRecipes-container" class="grid gap-10 grid-cols-1 md:grid-cols-2 xl:grid-cols-3"></div>
     </main>
     <footer></footer>
     <script type="module" src="./js/search.js"></script>
     <script type="module" src="./data/recipes.js"></script>
+    <script type="module" src="./js/Factories/recipefactories.js"></script>
+    <script type="module" src="./js/Utils/filters.js"></script>
   </body>
 </html>
