@@ -21,7 +21,7 @@ function displayRecipes (array) {
 // affiche les boutons de filtres avec leur titre
 function displayListButtons (array) {
   const buttonsEntitled = createList(array)
-  buttonsEntitled.forEach(element => createAListFactory().getListBlock(element))
+  buttonsEntitled.forEach(elt => createAListFactory().getListBlock(elt))
   console.log(buttonsEntitled)
   return buttonsEntitled
 }
