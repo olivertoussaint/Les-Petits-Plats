@@ -1,13 +1,17 @@
 import { recipes } from '../data/recipes.js'
 import { createAListFactory, createList } from './Factories/listFactories.js'
 import { createARecipeFactory } from './Factories/recipefactories.js'
+import { filterDropdownMenu, filterDropdown } from './Utils/dropdown.js'
 
 // ----------------- DOM
+const mainInput = document.getElementById('searchBar')
 const recipesContainer = document.getElementById('resultRecipes-container')
 const noResultsContainer = document.getElementById('noResults')
+const selectedTagContainer = document.getElementById('advancedSelectedFilterTags-container')
 
-// ----------------- Fonctions
-// affiche les recettes une par une à partir d'un array de recettes filtré ou non
+const tagsMap = new Map()
+let mainInputFilled = false
+
 function displayRecipes (array) {
   recipesContainer.innerHTML = ''
   if (array.length !== 0) {
@@ -18,16 +22,182 @@ function displayRecipes (array) {
   }
 }
 
-// affiche les boutons de filtres avec leur titre
 function displayListButtons (array) {
   const buttonsEntitled = createList(array)
-  buttonsEntitled.forEach(elt => createAListFactory().getListBlock(elt))
-  console.log(buttonsEntitled)
+  buttonsEntitled.forEach(element => createAListFactory().getList(element))
   return buttonsEntitled
 }
 
+function displayItemsInButtonsBlocks (array) {
+  const advancedFiltersLists = createAListFactory().makeLists(array)
+  for (const title in advancedFiltersLists) {
+    const menuBlock = document.querySelector(`menu #${title}-list`)
+    menuBlock.innerHTML = ''
+    advancedFiltersLists[title].map(item => createAListFactory().getListTemplate(item, title))
+  }
+  deleteItemstag(tagsMap)
+  return advancedFiltersLists
+}
+
+function deleteItemstag (tagsList) {
+  if (tagsList.size > 0) {
+    const displayedList = document.querySelectorAll('div > menu > li > menu > li > button')
+    tagsList.forEach((ListTittle, Item) => {
+      for (const button of displayedList) {
+        if (button.innerText.includes(Item)) {
+          button.parentElement.remove()
+        }
+      }
+    })
+  }
+}
+
+function displayTag (item, itemTittleList) {
+  selectedTagContainer.appendChild(createAListFactory().getItemTagTemplate(item, itemTittleList))
+}
+
+function deleteTag (e) {
+  selectedTagContainer.removeChild(e.target.parentNode.parentNode)
+}
 
 // ----------------- APPEL des fonctions
-
 displayListButtons(recipes)
 displayRecipes(recipes)
+let filteredListsAdvancedField = displayItemsInButtonsBlocks(recipes)
+
+// -----------------  Les EVENTS
+const advancedFiltersLi = document.querySelectorAll('div > menu > li')
+
+function search () {
+  let arrayFromMainInput = []
+  mainInput.addEventListener('input', (event) => {
+    event.stopPropagation()
+    selectedTagContainer.innerHTML = ''
+    tagsMap.clear()
+    if (event.target.value.length > 2) {
+      mainInput.parentElement.removeAttribute('data-error-visible', true)
+      mainInputFilled = true
+      arrayFromMainInput = filterThroughMainInput(event, recipes)
+      displayRecipes(arrayFromMainInput)
+      filteredListsAdvancedField = displayItemsInButtonsBlocks(arrayFromMainInput)
+    } else if (event.target.value.length < 3 && event.target.value.length > 0) {
+      mainInput.parentElement.setAttribute('data-error-visible', true)
+      mainInputFilled = false
+      displayRecipes(recipes)
+      filteredListsAdvancedField = displayItemsInButtonsBlocks(recipes)
+    } else if (event.target.value.length === 0) {
+      mainInput.parentElement.removeAttribute('data-error-visible')
+    }
+  })
+
+  const advancedFiltersInput = document.querySelectorAll('div > menu > li > button > input')
+  advancedFiltersInput.forEach(input => {
+    input.addEventListener('input', (event) => {
+      event.preventDefault()
+      const listTittle = (event.target).getAttribute('data-advanced-filter')
+      const lists = filteredListsAdvancedField
+      const listFiltered = filterAdvancedItemsListThroughAdvancedInput(event.target.value, listTittle, lists)
+      const tittledMenuBlock = document.querySelector(`menu #${listTittle}-list`)
+      tittledMenuBlock.innerHTML = ''
+      listFiltered.map(item => createAListFactory().getListTemplate(item, listTittle))
+    })
+  })
+
+  advancedFiltersLi.forEach(li => {
+    li.addEventListener('click', (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      filterDropdown(li, e, advancedFiltersLi)
+      deleteItemstag(tagsMap)
+      if (mainInputFilled === false) {
+        if (((e.target).toString().indexOf('Menu') === -1) &&
+        (!e.target.contains(li.firstChild)) &&
+        (!e.target.contains(li.firstChild.firstChild)) &&
+        (!e.target.contains(li.firstChild.firstChild.nextSibling))) {
+          const itemTittleList = (e.target).getAttribute('data-advanced-filter')
+          const item = e.target.innerText
+          tagsMap.set(item, itemTittleList)
+          selectedTagContainer.innerHTML = ''
+          tagsMap.forEach((itemTittL, ItM) => displayTag(ItM, itemTittL))
+          document.getElementById(`search-${itemTittleList}`).value = '' 
+          if (tagsMap.size === 1) {
+            tagsMap.forEach((itemTittleList, item) => displayRecipes(filterAdvancedField(item, recipes, itemTittleList)))
+            tagsMap.forEach((itemTittleList, item) => { filteredListsAdvancedField = displayItemsInButtonsBlocks(filterAdvancedField(item, recipes, itemTittleList)) })
+          } else if (tagsMap.size > 1) {
+            const multipleTagsArray = []
+            for (const [key, value] of tagsMap) {
+              multipleTagsArray.push(filterAdvancedField(key, recipes, value))
+            }
+            displayRecipes(intersection(multipleTagsArray))
+            filteredListsAdvancedField = displayItemsInButtonsBlocks(intersection(multipleTagsArray))
+          }
+        }
+      } else if (mainInputFilled === true) {
+        if (((e.target).toString().indexOf('Menu') === -1) &&
+          (!e.target.contains(li.firstChild)) /* button */ &&
+          (!e.target.contains(li.firstChild.firstChild)) /* son span */ &&
+          (!e.target.contains(li.firstChild.firstChild.nextSibling)) /* son input */) {
+          const itemListTittle = (e.target).getAttribute('data-advanced-filter')
+          const itemName = e.target.innerText
+          tagsMap.set(itemName, itemListTittle)
+          selectedTagContainer.innerHTML = '' 
+          tagsMap.forEach((itemTittL, ItM) => displayTag(ItM, itemTittL))
+          document.getElementById(`search-${itemListTittle}`).value = '' 
+          if (tagsMap.size === 1) {
+            displayRecipes(filterAdvancedField(itemName, arrayFromMainInput, itemListTittle))
+            filteredListsAdvancedField = displayItemsInButtonsBlocks(filterAdvancedField(itemName, arrayFromMainInput, itemListTittle))
+          } else if (tagsMap.size > 1) {
+            const multipleTagsArray = []
+            for (const [key, value] of tagsMap) {
+              multipleTagsArray.push(filterAdvancedField(key, arrayFromMainInput, value))
+            }
+            displayRecipes(intersection(multipleTagsArray))
+            filteredListsAdvancedField = displayItemsInButtonsBlocks(intersection(multipleTagsArray))
+          }
+        }
+      }
+    })
+  })
+  window.addEventListener('click', () => {
+    filterDropdownMenu(advancedFiltersLi)
+  })
+  window.addEventListener('click', (e) => {
+    if (e.target.className.includes('far fa-times-circle')) {
+      deleteTag(e)
+      tagsMap.delete(e.target.parentNode.parentNode.innerText)
+      if (mainInputFilled === false) {
+        if (tagsMap.size === 0) {
+          displayRecipes(recipes)
+          displayItemsInButtonsBlocks(recipes)
+        } else if (tagsMap.size === 1) {
+          tagsMap.forEach((itemTittleList, item) => displayRecipes(filterAdvancedField(item, recipes, itemTittleList)))
+          tagsMap.forEach((itemTittleList, item) => { filteredListsAdvancedField = displayItemsInButtonsBlocks(filterAdvancedField(item, recipes, itemTittleList)) })
+        } else if (tagsMap.size > 1) {
+          const multipleTagsArray = []
+          for (const [key, value] of tagsMap) {
+            multipleTagsArray.push(filterAdvancedField(key, recipes, value))
+          }
+          displayRecipes(intersection(multipleTagsArray))
+          filteredListsAdvancedField = displayItemsInButtonsBlocks(intersection(multipleTagsArray))
+        }
+      } else if (mainInputFilled === true) {
+        if (tagsMap.size === 0) {
+          displayRecipes(arrayFromMainInput)
+          displayItemsInButtonsBlocks(arrayFromMainInput)
+        } else if (tagsMap.size === 1) {
+          tagsMap.forEach((itemTittleList, item) => displayRecipes(filterAdvancedField(item, arrayFromMainInput, itemTittleList)))
+          tagsMap.forEach((itemTittleList, item) => { filteredListsAdvancedField = displayItemsInButtonsBlocks(filterAdvancedField(item, arrayFromMainInput, itemTittleList)) })
+        } else if (tagsMap.size > 1) {
+          const multipleTagsArray = []
+          for (const [key, value] of tagsMap) {
+            multipleTagsArray.push(filterAdvancedField(key, arrayFromMainInput, value))
+          }
+          displayRecipes(intersection(multipleTagsArray))
+          filteredListsAdvancedField = displayItemsInButtonsBlocks(intersection(multipleTagsArray))
+        }
+      }
+    }
+  })
+}
+
+search()
