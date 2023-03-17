@@ -14,7 +14,7 @@ export function createARecipeFactory(data) {
     const $unit =
       ingredients[elt].unit === undefined ? " " : ingredients[elt].unit;
     createRecipeIngredientsList.push(
-      `<li class="ingredients-list__item">${$ingredient} <span class="fw-normal">${$quantity} ${$unit}</span></li>`
+      `<li class="ingredients-list__item">${$ingredient} <span class="normal">${$quantity} ${$unit}</span></li>`
     );
   }
 
@@ -33,10 +33,10 @@ export function createARecipeFactory(data) {
     let process = document.createElement("p");
     process.setAttribute("class", "process");
     article.innerHTML = `
-      <img class="card-img-top" src="/assets/icons/logo.svg" alt="logo les petits plats">
+      <img class="card-img" src="/assets/icons/logo.svg" alt="logo les petits plats">
           <div class="recipe">
-            <p class="fw-semibold truncate">${name}</p>
-            <p class="fw-bold"><i class="far fa-clock"></i>${time} min</p>`;
+            <p class="truncate">${name}</p>
+            <p class="timer"><i class="far fa-clock"></i>${time} min</p>`;
 
     if (description.length >= 200) {
       process.innerHTML = truncateString(description, 200);
