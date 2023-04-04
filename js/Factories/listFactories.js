@@ -31,7 +31,7 @@ export function createAListFactory() {
   // function de traduction des titres
   function getList(element) {
     function translate (elt) {
-      if (elt === 'ingredients') {
+      if (element === 'ingredients') {
         elt = 'Ingrédients'
         return elt
       } else if (element === 'appliance') {
