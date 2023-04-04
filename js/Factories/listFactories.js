@@ -1,5 +1,5 @@
 // ----------------- import
-import { newStructure } from '../Utils/filters.js'
+import { refit } from '../Utils/filters.js'
 
 // ----------------- DOM
 const advancedFiltersMenu = document.getElementById('advancedFilters-list')
@@ -16,9 +16,9 @@ export function createList (array) {
 // construction des differents éléments des différents dropdowns sans occurence
 export function createAListFactory() {
   function makeLists (array) {
-    const applianceItemsList = [...new Set((array.map((recipe) => recipe.appliance)).map(e => newStructure(e)))]
-    const ustensilsItemsList = [...new Set((array.map((recipe) => recipe.ustensils).flat()).map(e => newStructure(e)))]
-    const ingredientsItemsList = [...new Set(((array.map((recipe) => recipe.ingredients.map((ing) => ing.ingredient))).flat()).map(e => newStructure(e)))]
+    const applianceItemsList = [...new Set((array.map((recipe) => recipe.appliance)).map(e => refit(e)))]
+    const ustensilsItemsList = [...new Set((array.map((recipe) => recipe.ustensils).flat()).map(e => refit(e)))]
+    const ingredientsItemsList = [...new Set(((array.map((recipe) => recipe.ingredients.map((ing) => ing.ingredient))).flat()).map(e => refit(e)))]
 
     const advancedFiltersLists = {
       ingredients: ingredientsItemsList,
