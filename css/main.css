@@ -71,10 +71,6 @@ header {
   border: none;
 }
 
-/* .searchBar {
-    position: relative;
-    margin-bottom: 25px;
-} */
 .searchBar__input {
     overflow: hidden;
     white-space: nowrap;
@@ -102,9 +98,9 @@ header {
 }
 #searchBar-container i {
   position: absolute;
-  top: 15%;
+  top: 22%;
   right: 15px;
-  font-size: 1.5em;
+  font-size: 1.2em;
 }
 
 #advancedSelectedFilterTags-container {
@@ -181,7 +177,7 @@ div > menu > li > button > input {
   color: rgba(255, 255, 255, 0.677);
   left: 0;
   width: 100%;
-  min-width: calc(100vw - (224px + 420px));
+  min-width: calc(85vw - (224px + 420px));
   padding: 0;
 }
 div > menu > li > button > span {
