@@ -18,7 +18,7 @@ export function createARecipeFactory(data) {
     );
   }
 
-  // contruction des cards
+  // création des cards
   function getRecipeCard() {
     const recipeWithAllIngredients = createRecipeIngredientsList.join(" ");
     const article = document.createElement("article");

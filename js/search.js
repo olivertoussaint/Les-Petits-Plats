@@ -1,7 +1,7 @@
 import { recipes } from '../data/recipes.js'
 import { createAListFactory, createList } from './Factories/listFactories.js'
 import { createARecipeFactory } from './Factories/recipefactories.js'
-import { filterThroughMainInput, filterThroughAdvancedField, filterAdvancedItemsListThroughAdvancedInput, intersection } from './Utils/filters.js'
+import { filterThroughMainInput, filterThroughAdvancedField, filterAdvancedItemsListFromAdvancedInput , intersection } from './Utils/filters.js'
 import { filterDropdownMenu, filterDropdown } from './Utils/dropdown.js'
 
 // ----------------- DOM
@@ -120,7 +120,7 @@ function search () {
       event.preventDefault()
       const listTittle = (event.target).getAttribute('data-advanced-filter')
       const lists = filteredListsAdvancedField
-      const listFiltered = filterAdvancedItemsListThroughAdvancedInput(event.target.value, listTittle, lists)
+      const listFiltered = filterAdvancedItemsListFromAdvancedInput (event.target.value, listTittle, lists)
       const tittledMenuBlock = document.querySelector(`menu #${listTittle}-list`)
       tittledMenuBlock.innerHTML = '' // vide le menu des items
       listFiltered.map(item => createAListFactory().getListTemplate(item, listTittle)) // rempli le menu des items
@@ -134,59 +134,43 @@ function search () {
       filterDropdown(li, e, advancedFiltersLi)
       suppressItemsTaggedFromButtonsLists(tagsMap)
       if (mainInputFilled === false) {
-        // le champs MainInput n'est pas renseigné
-        // console.log('e.target', e.target)
-        // condition : ne pas cliquer sur le menu (dans les espaces autour des boutons)
-        // et ne pas cliquer sur le bouton de tête (qui ferme la dropdown)
         if (((e.target).toString().indexOf('Menu') === -1) &&
-        (!e.target.contains(li.firstChild)) /* button */ &&
-        (!e.target.contains(li.firstChild.firstChild)) /* son span */ &&
-        (!e.target.contains(li.firstChild.firstChild.nextSibling)) /* son input */) {
+        (!e.target.contains(li.firstChild)) &&
+        (!e.target.contains(li.firstChild.firstChild)) &&
+        (!e.target.contains(li.firstChild.firstChild.nextSibling))) {
           const itemTittleList = (e.target).getAttribute('data-advanced-filter')
           const item = e.target.innerText
           tagsMap.set(item, itemTittleList)
-          // console.log('tagsMap', tagsMap)
           selectedTagContainer.innerHTML = ''
           tagsMap.forEach((itemTittL, ItM) => displayTag(ItM, itemTittL))
-          document.getElementById(`search-${itemTittleList}`).value = '' // vide l'input
+          document.getElementById(`search-${itemTittleList}`).value = '' 
           if (tagsMap.size === 1) {
-            // tagsMap.forEach((itemTittleList, item) => displayRecipes(filterThroughAdvancedField(item, recipes, itemTittleList)))
+            
             tagsMap.forEach((itemTittleList, item) => { filteredListsAdvancedField = displayItemsInButtonsBlocks(filterThroughAdvancedField(item, recipes, itemTittleList)) })
           } else if (tagsMap.size > 1) {
-            // s'il y a plus de deux tags sélectionnés
-            // je MAP mes tags (du coup les doublons ne sont pas pris en compte)
-            // à chaque clic sur tag, une liste de recette est crée et ajouté à l'array multipleTagsArray.
-            // TODO: changer nom de multipleTagsArray et intersection
             const multipleTagsArray = []
             for (const [key, value] of tagsMap) {
               multipleTagsArray.push(filterThroughAdvancedField(key, recipes, value))
             }
-            // console.log("à partir de 2 tags, le tableau créé: ", multipleTagsArray);
-            // l'array multipleTagsArray se composent d'un index par tag
-            // dans chaque index il y a un tableau des résultats du filtre sur le tableau de recettes (filtré ou non par le mainInput)
             displayRecipes(intersection(multipleTagsArray))
             filteredListsAdvancedField = displayItemsInButtonsBlocks(intersection(multipleTagsArray))
           }
         }
       } else if (mainInputFilled === true) {
-        // si le champs de recherche principal est renseigné
         if (((e.target).toString().indexOf('Menu') === -1) &&
-          (!e.target.contains(li.firstChild)) /* button */ &&
-          (!e.target.contains(li.firstChild.firstChild)) /* son span */ &&
-          (!e.target.contains(li.firstChild.firstChild.nextSibling)) /* son input */) {
-          // console.log("button clické : ",e.target.innerText )
+          (!e.target.contains(li.firstChild)) &&
+          (!e.target.contains(li.firstChild.firstChild)) &&
+          (!e.target.contains(li.firstChild.firstChild.nextSibling))) {
           const itemListTittle = (e.target).getAttribute('data-advanced-filter')
           const itemName = e.target.innerText
           tagsMap.set(itemName, itemListTittle)
-          selectedTagContainer.innerHTML = '' // vide le container avant de le remplir
+          selectedTagContainer.innerHTML = ''
           tagsMap.forEach((itemTittL, ItM) => displayTag(ItM, itemTittL))
-          document.getElementById(`search-${itemListTittle}`).value = '' // vide l'input
+          document.getElementById(`search-${itemListTittle}`).value = ''
           if (tagsMap.size === 1) {
-            // il y a un tag sélectionné
             displayRecipes(filterThroughAdvancedField(itemName, arrayFromMainInput, itemListTittle))
             filteredListsAdvancedField = displayItemsInButtonsBlocks(filterThroughAdvancedField(itemName, arrayFromMainInput, itemListTittle))
           } else if (tagsMap.size > 1) {
-            // s'il y a plus de deux tags sélectionnés
             const multipleTagsArray = []
             for (const [key, value] of tagsMap) {
               multipleTagsArray.push(filterThroughAdvancedField(key, arrayFromMainInput, value))
@@ -201,7 +185,6 @@ function search () {
   window.addEventListener('click', () => {
     filterDropdownMenu(advancedFiltersLi)
   })
-  // si on supprime des tags, filtrer à nouveau les tableaux avec les tags restants
   window.addEventListener('click', (e) => {
     if (e.target.className.includes('far fa-times-circle')) {
       suppressTag(e)
@@ -214,7 +197,6 @@ function search () {
           tagsMap.forEach((itemTittleList, item) => displayRecipes(filterThroughAdvancedField(item, recipes, itemTittleList)))
           tagsMap.forEach((itemTittleList, item) => { filteredListsAdvancedField = displayItemsInButtonsBlocks(filterThroughAdvancedField(item, recipes, itemTittleList)) })
         } else if (tagsMap.size > 1) {
-          // si dans le reste, il y a au moins deux tags sélectionnés
           const multipleTagsArray = []
           for (const [key, value] of tagsMap) {
             multipleTagsArray.push(filterThroughAdvancedField(key, recipes, value))
@@ -230,7 +212,6 @@ function search () {
           tagsMap.forEach((itemTittleList, item) => displayRecipes(filterThroughAdvancedField(item, arrayFromMainInput, itemTittleList)))
           tagsMap.forEach((itemTittleList, item) => { filteredListsAdvancedField = displayItemsInButtonsBlocks(filterThroughAdvancedField(item, arrayFromMainInput, itemTittleList)) })
         } else if (tagsMap.size > 1) {
-          // si dans le reste, il y a au moins deux tags sélectionnés
           const multipleTagsArray = []
           for (const [key, value] of tagsMap) {
             multipleTagsArray.push(filterThroughAdvancedField(key, arrayFromMainInput, value))

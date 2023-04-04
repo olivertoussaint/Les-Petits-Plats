@@ -13,7 +13,7 @@ export function createList (array) {
   return listTitles
 }
 
-// construction des differents éléments des différents dropdowns sans occurence
+// création des differents éléments des différents dropdowns sans occurence
 export function createAListFactory() {
   function makeLists (array) {
     const applianceItemsList = [...new Set((array.map((recipe) => recipe.appliance)).map(e => refit(e)))]
@@ -28,7 +28,7 @@ export function createAListFactory() {
     return advancedFiltersLists
   }
 
-  // function de traduction des titres
+  // fonction qui traduit les titres
   function getList(element) {
     function translate (elt) {
       if (element === 'ingredients') {

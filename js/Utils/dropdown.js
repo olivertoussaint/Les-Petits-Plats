@@ -4,7 +4,6 @@ export function filterDropdownMenu (elementMenu) {
     }
   }
   
-  // sur li il y a un addEventListener "click"
   export function filterDropdown (li, e, list) {
     if (li.classList.contains('active') && (li.firstChild === e.target)) {
       li.classList.remove('active')
