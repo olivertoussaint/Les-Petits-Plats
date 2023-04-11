@@ -30,7 +30,7 @@ export function filterThroughMainInput (e, array) {
       const filteredArrayUstensils = array.filter(recipe => recipe.ustensils.some(app => refit(app).includes(refit(value))))
       return filteredArrayUstensils
     } else if (tittle === 'ingredients') {
-      const filteredAdvancedArrayIngredients = array.filter(recipe => recipe.ingredients.some(ing => refit(ing.ingredient).includes(refit(value))))
+      const filteredAdvancedArrayIngredients = array.filter(recipe => recipe.ingredients.some(ingred => refit(ingred.ingredient).includes(refit(value))))
       return filteredAdvancedArrayIngredients
     }
   }

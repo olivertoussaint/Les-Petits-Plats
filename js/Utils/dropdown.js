@@ -4,7 +4,7 @@ export function filterDropdownMenu (elementMenu) {
     }
   }
   
-  export function filterDropdown (li, e, list) {
+  export function filteredDropdown (li, e, list) {
     if (li.classList.contains('active') && (li.firstChild === e.target)) {
       li.classList.remove('active')
     } else {

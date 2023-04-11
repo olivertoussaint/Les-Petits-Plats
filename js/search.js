@@ -2,7 +2,7 @@ import { recipes } from '../data/recipes.js'
 import { createAListFactory, createList } from './Factories/listFactories.js'
 import { createARecipeFactory } from './Factories/recipefactories.js'
 import { filterThroughMainInput, filterThroughAdvancedField, filterAdvancedItemsListFromAdvancedInput , intersection } from './Utils/filters.js'
-import { filterDropdownMenu, filterDropdown } from './Utils/dropdown.js'
+import { filterDropdownMenu, filteredDropdown } from './Utils/dropdown.js'
 
 // ----------------- DOM
 const mainInput = document.getElementById('searchBar')
@@ -17,12 +17,14 @@ let mainInputFilled = false
 // affiche les recettes une par une à partir d'un array de recettes filtré ou non
 function displayRecipes (array) {
   recipesContainer.innerHTML = ''
-  // console.log ('array length ds displayRecipes: ', array.length)
+
   if (array.length !== 0) {
     noResultsContainer.style.display = 'none'
     array.map(recipe => recipesContainer.appendChild(createARecipeFactory(recipe).getRecipeCard()))
   } else {
     noResultsContainer.style.display = 'flex'
+    // noResultsContainer.style.backgroundColor = 'orange'
+
   }
 }
 
@@ -33,14 +35,10 @@ function displayListButtons (array) {
   return buttonsEntitled
 }
 
-// il faut d'abord créer les listes des items (à mettre dans les boutons)
-// ensuite afficher les items dans les boutons un par un en suivant cette liste d'items (filtrée ou non)
-// on récupère la liste d'items filtrés pour ajouter des filtres sur cette liste
 function displayItemsInButtonsBlocks (array) {
   const advancedFiltersLists = createAListFactory().makeLists(array)
   // console.log('advancedFiltersLists : ', advancedFiltersLists)
   for (const title in advancedFiltersLists) {
-    // console.log("title", title)
     const menuBlock = document.querySelector(`menu #${title}-list`)
     menuBlock.innerHTML = ''
     advancedFiltersLists[title].map(item => createAListFactory().getListTemplate(item, title))
@@ -70,7 +68,6 @@ function displayTag (item, itemTittleList) {
 
 // supprime de l'affichage le tag cliqué
 function suppressTag (e) {
-  // console.log(e.target.parentNode.parentNode);
   selectedTagContainer.removeChild(e.target.parentNode.parentNode)
 }
 
@@ -82,20 +79,12 @@ let filteredListsAdvancedField = displayItemsInButtonsBlocks(recipes)
 
 // ----------------- EVENTS LISTENERS
 
-// ce selector capte la liste des boutons qui ouvre la dropdown,
-// ce selector doit être créé après l'affichage des boutons de listes
 const advancedFiltersLi = document.querySelectorAll('div > menu > li')
 
-// fait d'abord la gestion des inputs
-// ensuite la gestion des clicks:
-//    - avec le main Input vide
-//    - avec le main Input plein
-//    - click et gestion de la suppression de tag
 function search () {
   let arrayFromMainInput = []
   mainInput.addEventListener('input', (event) => {
     event.stopPropagation()
-    // console.log('main input event', event.target.value)
     selectedTagContainer.innerHTML = ''
     tagsMap.clear()
     if (event.target.value.length > 2) {
@@ -122,7 +111,7 @@ function search () {
       const lists = filteredListsAdvancedField
       const listFiltered = filterAdvancedItemsListFromAdvancedInput (event.target.value, listTittle, lists)
       const tittledMenuBlock = document.querySelector(`menu #${listTittle}-list`)
-      tittledMenuBlock.innerHTML = '' // vide le menu des items
+      tittledMenuBlock.innerHTML = ''
       listFiltered.map(item => createAListFactory().getListTemplate(item, listTittle)) // rempli le menu des items
     })
   })
@@ -131,7 +120,7 @@ function search () {
     li.addEventListener('click', (e) => {
       e.preventDefault()
       e.stopPropagation()
-      filterDropdown(li, e, advancedFiltersLi)
+      filteredDropdown(li, e, advancedFiltersLi)
       suppressItemsTaggedFromButtonsLists(tagsMap)
       if (mainInputFilled === false) {
         if (((e.target).toString().indexOf('Menu') === -1) &&
