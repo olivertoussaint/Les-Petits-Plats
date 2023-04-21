@@ -37,9 +37,11 @@ export function filterThroughMainInput (e, array) {
   
   export function intersection (array) {
     let intersectionArray = array[0]
-    for (let i = 0; i < array.length - 1; i++) {
-      intersectionArray = array[i + 1].filter(element => intersectionArray.includes(element))
-    }
+    console.log(intersectionArray)
+    // for (let i = 0; i < array.length - 1; i++) {
+    //   intersectionArray = array[i + 1].filter(element => intersectionArray.includes(element))
+    //   console.log(intersectionArray)
+    // }
     return intersectionArray
   };
 

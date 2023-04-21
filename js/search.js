@@ -2,7 +2,7 @@ import { recipes } from '../data/recipes.js'
 import { createAListFactory, createList } from './Factories/listFactories.js'
 import { createARecipeFactory } from './Factories/recipefactories.js'
 import { filterThroughMainInput, filterThroughAdvancedField, filterAdvancedItemsListFromAdvancedInput , intersection } from './Utils/filters.js'
-import { filterDropdownMenu, filteredDropdown } from './Utils/dropdown.js'
+import { foldDropdown, unfoldAndFoldDropdown } from './Utils/dropdown.js'
 
 // ----------------- DOM
 const mainInput = document.getElementById('searchBar')
@@ -23,8 +23,6 @@ function displayRecipes (array) {
     array.map(recipe => recipesContainer.appendChild(createARecipeFactory(recipe).getRecipeCard()))
   } else {
     noResultsContainer.style.display = 'flex'
-    // noResultsContainer.style.backgroundColor = 'orange'
-
   }
 }
 
@@ -40,18 +38,18 @@ function displayItemsInButtonsBlocks (array) {
   // console.log('advancedFiltersLists : ', advancedFiltersLists)
   for (const title in advancedFiltersLists) {
     const menuBlock = document.querySelector(`menu #${title}-list`)
-    menuBlock.innerHTML = ''
+    menuBlock.innerHTML = "";
     advancedFiltersLists[title].map(item => createAListFactory().getListTemplate(item, title))
   }
-  suppressItemsTaggedFromButtonsLists(tagsMap)
+  deleteTaggedItemFromDropdownList(tagsMap)
   return advancedFiltersLists
 }
 
-// si un item est présent dans les tags alors le supprimer des listes
-function suppressItemsTaggedFromButtonsLists (tagsList) {
+//si un item est présent dans les tags alors le supprimer des listes
+function deleteTaggedItemFromDropdownList (tagsList) {
   if (tagsList.size > 0) {
     const displayedList = document.querySelectorAll('div > menu > li > menu > li > button')
-    tagsList.forEach((ListTittle, Item) => {
+    tagsList.forEach((button, Item) => {
       for (const button of displayedList) {
         if (button.innerText.includes(Item)) {
           button.parentElement.remove()
@@ -62,12 +60,12 @@ function suppressItemsTaggedFromButtonsLists (tagsList) {
 }
 
 // affiche le tag cliqué dans le container de tag
-function displayTag (item, itemTittleList) {
-  selectedTagContainer.appendChild(createAListFactory().getItemTagTemplate(item, itemTittleList))
+function displayTag (item, itemTitleList) {
+  selectedTagContainer.appendChild(createAListFactory().getItemTagTemplate(item, itemTitleList))
 }
 
 // supprime de l'affichage le tag cliqué
-function suppressTag (e) {
+function deleteTag (e) {
   selectedTagContainer.removeChild(e.target.parentNode.parentNode)
 }
 
@@ -107,12 +105,12 @@ function search () {
   advancedFiltersInput.forEach(input => {
     input.addEventListener('input', (event) => {
       event.preventDefault()
-      const listTittle = (event.target).getAttribute('data-advanced-filter')
+      const listTitle = (event.target).getAttribute('data-advanced-filter')
       const lists = filteredListsAdvancedField
       const listFiltered = filterAdvancedItemsListFromAdvancedInput (event.target.value, listTittle, lists)
-      const tittledMenuBlock = document.querySelector(`menu #${listTittle}-list`)
+      const tittledMenuBlock = document.querySelector(`menu #${listTitle}-list`)
       tittledMenuBlock.innerHTML = ''
-      listFiltered.map(item => createAListFactory().getListTemplate(item, listTittle)) // rempli le menu des items
+      listFiltered.map(item => createAListFactory().getListTemplate(item, listTitle)) // rempli le menu des items
     })
   })
 
@@ -120,22 +118,22 @@ function search () {
     li.addEventListener('click', (e) => {
       e.preventDefault()
       e.stopPropagation()
-      filteredDropdown(li, e, advancedFiltersLi)
-      suppressItemsTaggedFromButtonsLists(tagsMap)
+      unfoldAndFoldDropdown(li, e, advancedFiltersLi)
+      deleteTaggedItemFromDropdownList(tagsMap)
       if (mainInputFilled === false) {
         if (((e.target).toString().indexOf('Menu') === -1) &&
         (!e.target.contains(li.firstChild)) &&
         (!e.target.contains(li.firstChild.firstChild)) &&
         (!e.target.contains(li.firstChild.firstChild.nextSibling))) {
-          const itemTittleList = (e.target).getAttribute('data-advanced-filter')
+          const itemTitleList = (e.target).getAttribute('data-advanced-filter')
           const item = e.target.innerText
-          tagsMap.set(item, itemTittleList)
+          tagsMap.set(item, itemTitleList)
           selectedTagContainer.innerHTML = ''
-          tagsMap.forEach((itemTittL, ItM) => displayTag(ItM, itemTittL))
-          document.getElementById(`search-${itemTittleList}`).value = '' 
+          tagsMap.forEach((itemTitle, ItM) => displayTag(ItM, itemTitle))
+          document.getElementById(`search-${itemTitleList}`).value = '' 
           if (tagsMap.size === 1) {
             
-            tagsMap.forEach((itemTittleList, item) => { filteredListsAdvancedField = displayItemsInButtonsBlocks(filterThroughAdvancedField(item, recipes, itemTittleList)) })
+            tagsMap.forEach((itemTitleList, item) => { filteredListsAdvancedField = displayItemsInButtonsBlocks(filterThroughAdvancedField(item, recipes, itemTitleList)) })
           } else if (tagsMap.size > 1) {
             const multipleTagsArray = []
             for (const [key, value] of tagsMap) {
@@ -152,9 +150,9 @@ function search () {
           (!e.target.contains(li.firstChild.firstChild.nextSibling))) {
           const itemListTittle = (e.target).getAttribute('data-advanced-filter')
           const itemName = e.target.innerText
-          tagsMap.set(itemName, itemListTittle)
+          tagsMap.set(itemName, itemListTitle)
           selectedTagContainer.innerHTML = ''
-          tagsMap.forEach((itemTittL, ItM) => displayTag(ItM, itemTittL))
+          tagsMap.forEach((itemTitle, ItM) => displayTag(ItM, itemTitle))
           document.getElementById(`search-${itemListTittle}`).value = ''
           if (tagsMap.size === 1) {
             displayRecipes(filterThroughAdvancedField(itemName, arrayFromMainInput, itemListTittle))
@@ -172,19 +170,19 @@ function search () {
     })
   })
   window.addEventListener('click', () => {
-    filterDropdownMenu(advancedFiltersLi)
+    foldDropdown(advancedFiltersLi)
   })
   window.addEventListener('click', (e) => {
     if (e.target.className.includes('far fa-times-circle')) {
-      suppressTag(e)
+      deleteTag(e)
       tagsMap.delete(e.target.parentNode.parentNode.innerText)
       if (mainInputFilled === false) {
         if (tagsMap.size === 0) {
           displayRecipes(recipes)
           displayItemsInButtonsBlocks(recipes)
         } else if (tagsMap.size === 1) {
-          tagsMap.forEach((itemTittleList, item) => displayRecipes(filterThroughAdvancedField(item, recipes, itemTittleList)))
-          tagsMap.forEach((itemTittleList, item) => { filteredListsAdvancedField = displayItemsInButtonsBlocks(filterThroughAdvancedField(item, recipes, itemTittleList)) })
+          tagsMap.forEach((itemTitleList, item) => displayRecipes(filterThroughAdvancedField(item, recipes, itemTitleList)))
+          tagsMap.forEach((itemTitleList, item) => { filteredListsAdvancedField = displayItemsInButtonsBlocks(filterThroughAdvancedField(item, recipes, itemTitleList)) })
         } else if (tagsMap.size > 1) {
           const multipleTagsArray = []
           for (const [key, value] of tagsMap) {
@@ -198,8 +196,8 @@ function search () {
           displayRecipes(arrayFromMainInput)
           displayItemsInButtonsBlocks(arrayFromMainInput)
         } else if (tagsMap.size === 1) {
-          tagsMap.forEach((itemTittleList, item) => displayRecipes(filterThroughAdvancedField(item, arrayFromMainInput, itemTittleList)))
-          tagsMap.forEach((itemTittleList, item) => { filteredListsAdvancedField = displayItemsInButtonsBlocks(filterThroughAdvancedField(item, arrayFromMainInput, itemTittleList)) })
+          tagsMap.forEach((itemTitleList, item) => displayRecipes(filterThroughAdvancedField(item, arrayFromMainInput, itemTitleList)))
+          tagsMap.forEach((itemTitleList, item) => { filteredListsAdvancedField = displayItemsInButtonsBlocks(filterThroughAdvancedField(item, arrayFromMainInput, itemTitleList)) })
         } else if (tagsMap.size > 1) {
           const multipleTagsArray = []
           for (const [key, value] of tagsMap) {

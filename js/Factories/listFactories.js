@@ -16,16 +16,9 @@ export function createList (array) {
 // création des differents éléments des différents dropdowns sans occurence
 export function createAListFactory() {
   function makeLists (array) {
-    // const applianceItemsList = [...new Set((array.map((recipe) => recipe.appliance)).map(e => refit(e)))]
-    // const ustensilsItemsList = [...new Set((array.map((recipe) => recipe.ustensils).flat()).map(e => refit(e)))]
-    // const ingredientsItemsList = [...new Set(((array.map((recipe) => recipe.ingredients.map((ing) => ing.ingredient))).flat()).map(e => refit(e)))]
-
-    const ingredientsItemsList = [...new Set(array.flatMap(recipe => recipe.ingredients.map((ingred) => ingred.ingredient)).map(e => refit(e)))].sort((a,b) => a.localeCompare(b))
+   const ingredientsItemsList = [...new Set(array.flatMap(recipe => recipe.ingredients.map((ingred) => ingred.ingredient)).map(e => refit(e)))].sort((a,b) => a.localeCompare(b))
     const applianceItemsList = [...new Set(array.flatMap(recipe => recipe.appliance).map(e => refit(e)))].sort((a,b) => a.localeCompare(b))
     const ustensilsItemsList = [...new Set(array.flatMap(recipe => recipe.ustensils.map(e => refit(e))))].sort((a,b) => a.localeCompare(b))
-    console.log(ingredientsItemsList)
-    console.log(applianceItemsList)
-    console.log(ustensilsItemsList)
 
     const advancedFiltersLists = {
       ingredients: ingredientsItemsList,

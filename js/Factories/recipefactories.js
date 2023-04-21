@@ -14,7 +14,7 @@ export function createARecipeFactory(data) {
     const $unit =
       ingredients[elt].unit === undefined ? " " : ingredients[elt].unit;
     createRecipeIngredientsList.push(
-      `<li class="ingredients-list__item">${$ingredient} <span class="normal">${$quantity} ${$unit}</span></li>`
+      `<li class="ingredients-list__item">${$ingredient} <span class="f-w-400">${$quantity} ${$unit}</span></li>`
     );
   }
 
@@ -51,9 +51,9 @@ export function createARecipeFactory(data) {
     $bottomRecipeDescription.appendChild($recipeDescription);
     $bottomRecipeDescription.appendChild(process);
 
-    return article;
+    return article
   }
   return {
-    getRecipeCard,
+    getRecipeCard
   };
 }
