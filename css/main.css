@@ -7,7 +7,7 @@
   font-size: 18px;
 }
 body {
-  padding: 30px 100px;
+  padding: 30px 55px;
 }
 @media screen and (max-width: 900px) {
   body {
@@ -351,8 +351,8 @@ div > menu > li.active > button:after {
 .ingredients-list__item {
     font-weight: 600;
 }
-.normal {
-    font-weight: 100;
+.f-w-400 {
+    font-weight: 400;
 }
 .process {
     width: 45%;
