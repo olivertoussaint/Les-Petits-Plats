@@ -4,6 +4,8 @@ import { refit } from '../Utils/filters.js'
 // ----------------- DOM
 const advancedFiltersMenu = document.getElementById('advancedFilters-list')
 
+// ----------------- functions
+
 // crée un tableau des titres des listes pour affichage en tête de liste
 export function createList (array) {
   const listTitleIng = (Object.keys(array[0]))[3]
@@ -13,10 +15,11 @@ export function createList (array) {
   return listTitles
 }
 
-// création des differents éléments des différents dropdowns sans occurence
-export function createAListFactory() {
+// fabrique plusieurs éléments visuel des filtres avancés
+export function createAListFactory () {
+  // Avec recipes, fait les listes des différents items et renvoie un objet destructurer
   function makeLists (array) {
-   const ingredientsItemsList = [...new Set(array.flatMap(recipe => recipe.ingredients.map((ingred) => ingred.ingredient)).map(e => refit(e)))].sort((a,b) => a.localeCompare(b))
+    const ingredientsItemsList = [...new Set(array.flatMap(recipe => recipe.ingredients.map((ingred) => ingred.ingredient)).map(e => refit(e)))].sort((a,b) => a.localeCompare(b))
     const applianceItemsList = [...new Set(array.flatMap(recipe => recipe.appliance).map(e => refit(e)))].sort((a,b) => a.localeCompare(b))
     const ustensilsItemsList = [...new Set(array.flatMap(recipe => recipe.ustensils.map(e => refit(e))))].sort((a,b) => a.localeCompare(b))
 
@@ -28,10 +31,9 @@ export function createAListFactory() {
     return advancedFiltersLists
   }
 
-  // fonction qui traduit les titres
-  function getList(element) {
+  function getListBlock (element) {
     function translate (elt) {
-      if (element === 'ingredients') {
+      if (elt === 'ingredients') {
         elt = 'Ingrédients'
         return elt
       } else if (element === 'appliance') {
@@ -66,6 +68,7 @@ export function createAListFactory() {
     liBlock.appendChild(menuBlock)
   }
 
+  // fabrique la partie liste des filtres avancés
   function getListTemplate (item, itemTittleList) {
     const listElement = document.createElement('li')
     listElement.setAttribute('class', 'list')
@@ -78,6 +81,7 @@ export function createAListFactory() {
     listElement.appendChild(listElementButton)
   }
 
+  // fabrique la partie tag des items sélectionnés des filtres avancés
   function getItemTagTemplate (item, itemTittleList) {
     const selectedTag = document.createElement('div')
     selectedTag.className = 'advancedSelectedFilterTag'
@@ -95,7 +99,7 @@ export function createAListFactory() {
 
   return {
     makeLists,
-    getList,
+    getListBlock,
     getListTemplate,
     getItemTagTemplate
   }

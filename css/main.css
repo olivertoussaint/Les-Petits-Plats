@@ -31,6 +31,30 @@ header {
     max-width: 60%;
 }
 
+/* ------------------ Message ------------------ */
+.fd-message {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  font-size: 1.21rem;
+  transform: scaleY(0);
+  transition: transform 300ms;
+}
+
+.fd-message.opened {
+  height: auto;
+  margin: 1rem 0;
+  transform: scaleY(1);
+}
+
+.fd-message i {
+  margin-left: 1rem;
+  cursor: pointer;
+}
 /* --------------------------- Search section --------------------------- */
 /* ------------------ Search bar ------------------ */
 .appliance-color {
