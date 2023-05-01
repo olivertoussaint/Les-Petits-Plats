@@ -19,20 +19,31 @@ let mainInputFilled = false
 // affiche les recettes une par une à partir d'un array de recettes filtré ou non
 function displayRecipes (array) {
   const arrayLength = array.length
+
   recipesContainer.innerHTML = ''
-  console.log(arrayLength)
   const messageSpan = document.querySelector("#message span")
   messageSpan.innerHTML =''
   let message
+  messageAside.classList.remove("opened")
   
   if (arrayLength !== 0) {
+    console.log(arrayLength)
     array.map(recipe => recipesContainer.appendChild(createARecipeFactory(recipe).getRecipeCard()))
     noResultsContainer.style.display = 'none'
-    message = `recette${
-      arrayLength > 1 ? "s" : ""
-    } correspond${arrayLength > 1 ? "ent" : ""} à votre recherche.`;
-    messageAside.classList.add("opened");    
-    messageSpan.textContent = message
+    if (arrayLength > 1 && arrayLength < 10) {
+      messageSpan.textContent = `${arrayLength} recettes trouvées à votre recherche.`
+      messageAside.classList.add("opened");  
+      setTimeout(function() {
+        messageAside.classList.remove("opened");
+      },3000); 
+    }
+    if  (arrayLength === 1 ){
+      messageSpan.textContent = `${arrayLength} recette trouvée à votre recherche.`
+      messageAside.classList.add("opened");
+      setTimeout(function() {
+        messageAside.classList.remove("opened");
+      },3000); 
+    }
     
   } else {
     message = 'Aucune recette ne correspond à votre recherche... Vous pouvez chercher "tarte aux pommes", "poisson", etc.'
@@ -83,7 +94,7 @@ function displayTag (item, itemTittleList) {
 // supprime de l'affichage le tag cliqué
 function suppressTag (e) {
   console.log(e.target.parentNode.parentNode);
-  selectedTagContainer.removeChild(e.target.parentNode.parentNode); 
+  selectedTagContainer.removeChild(e.target.parentNode.parentNode);
 }
 
 // ----------------- APPEL des fonctions
@@ -203,7 +214,7 @@ function search () {
           displayItemsInButtonsBlocks(recipes)
         } else if (tagsMap.size === 1) {
           tagsMap.forEach((itemTittleList, item) => displayRecipes(filterThroughAdvancedField(item, recipes, itemTittleList)))
-          tagsMap.forEach((itemTittleList, item) => { filteredListsAdvancedField = displayItemsInButtonsBlocks(filterThroughAdvancedField(item, recipes, itemTittleList)) })
+          tagsMap.forEach((itemTittleList, item) => { filteredListsAdvancedField = displayItemsInButtonsBlocks(filterThroughAdvancedField(item, recipes, itemTittleList))})
         } else if (tagsMap.size > 1) {
           // si dans le reste, il y a au moins deux tags sélectionnés
           const multipleTagsArray = []
