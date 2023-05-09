@@ -1,7 +1,7 @@
 import { recipes } from '../data/recipes.js'
 import { createAListFactory, createList } from './Factories/listFactories.js'
 import { createARecipeFactory } from './Factories/recipefactories.js'
-import { filterThroughMainInput, filterThroughAdvancedField, filterAdvancedItemsListThroughAdvancedInput, intersection } from './Utils/filters.js'
+import { filterThroughAdvancedField, filterAdvancedItemsListThroughAdvancedInput, intersectionBis, loopThroughMainInput } from './Utils/filters.js'
 import { foldDropdown, unfoldAndFoldDropdown } from './Utils/dropdown.js'
 
 // ----------------- DOM
@@ -12,7 +12,7 @@ const selectedTagContainer = document.getElementById('advancedSelectedFilterTags
 const messageAside = document.getElementById("message") 
 
 
-const tagsMap = new Map()
+let tagsMap = new Map()
 let mainInputFilled = false
 
 // ----------------- Fonctions
@@ -115,7 +115,7 @@ function search () {
     if (event.target.value.length > 2) {
       mainInput.parentElement.removeAttribute('data-error-visible', true)
       mainInputFilled = true
-      arrayFromMainInput = filterThroughMainInput(event, recipes)
+      arrayFromMainInput = loopThroughMainInput(event, recipes)
       displayRecipes(arrayFromMainInput)
       filteredListsAdvancedField = displayItemsInButtonsBlocks(arrayFromMainInput)
     } else if (event.target.value.length < 3 && event.target.value.length > 0) {
@@ -131,7 +131,8 @@ function search () {
   const advancedFiltersInput = document.querySelectorAll('div > menu > li > button > input')
   advancedFiltersInput.forEach(input => {
     input.addEventListener('input', (event) => {
-      event.preventDefault()
+      event.preventDefault();
+
       const listTittle = (event.target).getAttribute('data-advanced-filter')
       const lists = filteredListsAdvancedField
       const listFiltered = filterAdvancedItemsListThroughAdvancedInput(event.target.value, listTittle, lists)
@@ -166,8 +167,8 @@ function search () {
             for (const [key, value] of tagsMap) {
               multipleTagsArray.push(filterThroughAdvancedField(key, recipes, value))
             }
-            displayRecipes(intersection(multipleTagsArray))
-            filteredListsAdvancedField = displayItemsInButtonsBlocks(intersection(multipleTagsArray))
+            displayRecipes(intersectionBis(multipleTagsArray))
+            filteredListsAdvancedField = displayItemsInButtonsBlocks(intersectionBis(multipleTagsArray))
           }
         }
       } else if (mainInputFilled === true) {
@@ -192,8 +193,8 @@ function search () {
             for (const [key, value] of tagsMap) {
               multipleTagsArray.push(filterThroughAdvancedField(key, arrayFromMainInput, value))
             }
-            displayRecipes(intersection(multipleTagsArray))
-            filteredListsAdvancedField = displayItemsInButtonsBlocks(intersection(multipleTagsArray))
+            displayRecipes(intersectionBis(multipleTagsArray))
+            filteredListsAdvancedField = displayItemsInButtonsBlocks(intersectionBis(multipleTagsArray))
           }
         }
       }
@@ -221,8 +222,8 @@ function search () {
           for (const [key, value] of tagsMap) {
             multipleTagsArray.push(filterThroughAdvancedField(key, recipes, value))
           }
-          displayRecipes(intersection(multipleTagsArray))
-          filteredListsAdvancedField = displayItemsInButtonsBlocks(intersection(multipleTagsArray))
+          displayRecipes(intersectionBis(multipleTagsArray))
+          filteredListsAdvancedField = displayItemsInButtonsBlocks(intersectionBis(multipleTagsArray))
         }
       } else if (mainInputFilled === true) {
         if (tagsMap.size === 0) {
@@ -237,8 +238,8 @@ function search () {
           for (const [key, value] of tagsMap) {
             multipleTagsArray.push(filterThroughAdvancedField(key, arrayFromMainInput, value))
           }
-          displayRecipes(intersection(multipleTagsArray))
-          filteredListsAdvancedField = displayItemsInButtonsBlocks(intersection(multipleTagsArray))
+          displayRecipes(intersectionBis(multipleTagsArray))
+          filteredListsAdvancedField = displayItemsInButtonsBlocks(intersectionBis(multipleTagsArray))
         }
       }
     }
