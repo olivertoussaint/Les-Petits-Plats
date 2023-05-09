@@ -9,27 +9,27 @@ export function filterThroughMainInput (e, array) {
   const setOfMainSearchInput = [...new Set([...filteredArrayDescription, ...filteredArrayName, ...filteredArrayIngredients])]
   return setOfMainSearchInput
 }
-export function filterAdvancedItemsListThroughAdvancedInput (valeur, tittle, arraydeslistes) {
-  if (tittle === 'appliance') {
-    const filteredWithInputInAppliance = (arraydeslistes.appliance).filter(item => item.includes(refit(valeur)))
+export function filterAdvancedItemsListThroughAdvancedInput (value, title, listArray) {
+  if (title === 'appliance') {
+    const filteredWithInputInAppliance = (listArray.appliance).filter(item => item.includes(refit(value)))
     return filteredWithInputInAppliance
-  } else if (tittle === 'ustensils') {
-    const filteredWithInputInUstensils = (arraydeslistes.ustensils).filter(item => item.includes(refit(valeur)))
+  } else if (title === 'ustensils') {
+    const filteredWithInputInUstensils = (listArray.ustensils).filter(item => item.includes(refit(value)))
     return filteredWithInputInUstensils
-  } else if (tittle === 'ingredients') {
-    const filteredWithInputInIngredients = (arraydeslistes.ingredients).filter(item => item.includes(refit(valeur)))
+  } else if (title === 'ingredients') {
+    const filteredWithInputInIngredients = (listArray.ingredients).filter(item => item.includes(refit(value)))
     return filteredWithInputInIngredients
   }
 }
-export function filterThroughAdvancedField (valeur, array, tittle) {
-  if (tittle === 'appliance') {
-    const filteredArrayAppliance = array.filter(recipe => refit(recipe.appliance).includes(refit(valeur)))
+export function filterThroughAdvancedField (value, array, title) {
+  if (title === 'appliance') {
+    const filteredArrayAppliance = array.filter(recipe => refit(recipe.appliance).includes(refit(value)))
     return filteredArrayAppliance
-  } else if (tittle === 'ustensils') {
-    const filteredArrayUstensils = array.filter(recipe => recipe.ustensils.some(app => refit(app).includes(refit(valeur))))
+  } else if (title === 'ustensils') {
+    const filteredArrayUstensils = array.filter(recipe => recipe.ustensils.some(app => refit(app).includes(refit(value))))
     return filteredArrayUstensils
-  } else if (tittle === 'ingredients') {
-    const filteredAdvancedArrayIngredients = array.filter(recipe => recipe.ingredients.some(ing => refit(ing.ingredient).includes(refit(valeur))))
+  } else if (title === 'ingredients') {
+    const filteredAdvancedArrayIngredients = array.filter(recipe => recipe.ingredients.some(ing => refit(ing.ingredient).includes(refit(value))))
     return filteredAdvancedArrayIngredients
   }
 }
