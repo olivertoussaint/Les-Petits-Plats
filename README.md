@@ -8,6 +8,14 @@ Vous êtes freelance et vous venez d’être missionné par l’entreprise “Le
 
 Après avoir édité des livres de cuisine pendant plusieurs années, l’entreprise a décidé de se lancer dans un nouveau projet : réaliser son propre site de recettes de cuisine à l’instar de Marmiton ou 750g.  Sandra, cheffe de projet, est en charge de la digitalisation de l'entreprise avec la création de ce site web. Pour l’instant, elle travaille uniquement avec des freelances comme vous, avant de créer une équipe en interne pour gérer ce projet.
 
+## Mission
+* Mise en place des filtres de recherche.
+* La primauté sera mise sur fluidité du filtre de recherche.
+
+Afin de tester la rapidité d'exécution des algorithmes de recherche, nous allons utiliser la plateforme `JSBench`.
+
+Nous choisirons ensuite la plus performante
+
 ## Livrables
 
 1. Une fiche d’investigation de fonctionnalité sur l’algorithme de recherche (format PDF). Vous y intégrerez le choix de l'algorithme définitif en comparaison à l’autre algorithme de recherche développé. 
