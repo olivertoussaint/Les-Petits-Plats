@@ -1,5 +1,5 @@
 export function createARecipeFactory(data) {
-  const { name, ingredients, time, description } = data;
+  const { image, name, ingredients, time, description } = data;
   const createRecipeIngredientsList = [];
 
   const truncateString = (string = " ... ", maxLength = 50) =>
@@ -33,7 +33,7 @@ export function createARecipeFactory(data) {
     let process = document.createElement("p");
     process.setAttribute("class", "process");
     article.innerHTML = `
-      <img class="card-img" src="/assets/icons/logo.svg" alt="logo les petits plats">
+      <img class="card-img" src="/assets/images/${image}" alt="image de ${name}">
           <div class="recipe">
             <p class="truncate">${name}</p>
             <p class="timer"><i class="far fa-clock"></i>${time} min</p>`;
@@ -51,9 +51,9 @@ export function createARecipeFactory(data) {
     $bottomRecipeDescription.appendChild($recipeDescription);
     $bottomRecipeDescription.appendChild(process);
 
-    return article
+    return article;
   }
   return {
-    getRecipeCard
+    getRecipeCard,
   };
 }

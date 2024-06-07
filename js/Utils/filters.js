@@ -25,6 +25,31 @@ export function filterRecipesByInput(e, array) {
   ];
   return setOfMainSearchInput;
 }
+
+export function loopByMainInput(e, array){
+  let filteredRecipes=[];
+  let searchedDescription, searchedName, searchedIngredient
+  for (let i = 0; i < array.length; i++) {
+      searchedDescription = normalizeString(array[i].description).indexOf(normalizeString(e.target.value))
+      searchedName = normalizeString(array[i].name).indexOf(normalizeString(e.target.value))
+      if (searchedDescription!== -1 &&filteredRecipes.indexOf(array[i])== -1) {
+         filteredRecipes.push(array[i])
+      } 
+      if (searchedName!== -1 &&filteredRecipes.indexOf(array[i])== -1) {
+         filteredRecipes.push(array[i])
+      }
+      for (let j = 0; j < array[i].ingredients.length; j++){
+          searchedIngredient = normalizeString(array[i].ingredients[j].ingredient).indexOf(normalizeString(e.target.value))
+          if (searchedIngredient !== -1 &&filteredRecipes.indexOf(array[i]) == -1){
+             filteredRecipes.push(array[i])
+          }
+      }
+  }
+  return filteredRecipes;
+}
+
+
+
 export function filterItemsByCategory(value, title, listArray) {
   if (title === "appliance") {
     const filteredWithInputInAppliance = listArray.appliance.filter((item) =>
