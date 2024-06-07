@@ -34,7 +34,7 @@ header {
   padding: 40px 0 0 0;
 }
 header #logo {
-    max-width: 350px;
+  max-width: 350px;
 }
 @media screen and (max-width: 600px) {
   header #logo {
@@ -61,19 +61,20 @@ header #logo {
   margin: 1rem 0;
   padding: 10px;
   transform: scaleY(1);
-  background: linear-gradient(to right, #3282f7 5%, #68d9a4 20%,#ed6454 100%);
+  background: linear-gradient(to right, #3282f7 5%, #68d9a4 20%, #ed6454 100%);
   background-clip: text;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-  /* border: 2px solid #68d9a498; */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  border: 2px solid #68d9a498;
   box-shadow: 2px 2px 10px rgba(0, 128, 255, 0.671);
   width: 25%;
 }
 
 @media screen and (max-width: 600px) {
   .fd-message.opened {
+    width: 75%;
     text-align: center;
-    padding: .8rem;
+    padding: 0.8rem;
   }
 }
 
@@ -84,7 +85,6 @@ header #logo {
 
 @media screen and (max-width: 600px) {
   .fd-message i {
-    /* color: rgb(17, 17, 18); */
     display: flex;
     flex-direction: column;
     position: relative;
@@ -103,7 +103,6 @@ header #logo {
 .ustensils-color {
   background-color: #ed6454;
 }
-
 #searchBar-container {
   position: relative;
   padding-bottom: 5px;
@@ -124,48 +123,82 @@ header #logo {
 .searchBar[data-error-visible="true"]::after {
   opacity: 1;
 }
-
 #searchBar {
-  width: 95.55%;
+  width: 95%;
   padding: 20px;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   background-color: #e7e7e7;
   border: none;
 }
-input:focus {
+@media screen and (max-width: 600px) {
+  #searchBar {
+    padding: 10px;
+  }
+}
+#searchBar:focus {
   outline: none !important;
-  border-color: #719ECE;
-  box-shadow: 0 0 10px #719ECE;
+  border-color: #719ece;
+  box-shadow: 0 0 2px #e93e3c;
+  z-index: 300;
+}
+#search-ingredients:focus {
+  outline: none !important;
+  box-shadow: 0 0 5px #0d2ed6;
+  padding: 5px 5px 5px 2px;
+  z-index: 300;
+}
+#search-ustensils:focus {
+  outline: none !important;
+  box-shadow: 0 0 5px #d60da7;
+  padding: 5px 5px 5px 2px;
+  z-index: 300;
+}
+#search-appliance:focus {
+  outline: none !important;
+  box-shadow: 0 0 5px #0dd64d;
+  padding: 5px 5px 5px 2px;
   z-index: 300;
 }
 
 .searchBar__input {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    font-size: 1.125rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 1.125rem;
+}
+
+@media screen and (max-width: 480px) {
+  .searchBar__input {
+    font-size: 1rem;
+  }
 }
 .searchBar__icon {
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: grid;
-    place-items: center;
-    width: 70px;
-    height: 3.8rem;
-    border: none;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    background-color: #e7e7e7;
-    font-size: 1.8rem;
-    transition: transform .3s ease;
-    box-shadow: 3px 0px 76px 6px #719ECE;
-    /* cursor: pointer; */
+  position: absolute;
+  top: -1px;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: 63px;
+  height: 3.95rem;
+  border: none;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: #f5f4f4;
+  font-size: 1.8rem;
+  transition: transform 0.3s ease;
+}
+
+@media screen and (max-width: 480px) {
+  .searchBar__icon {
+    top: 1px;
+    width: 43px;
+    height: 2.5rem;
+  }
 }
 
 #searchBar::placeholder {
-  color: black;
+  color: rgb(0, 0, 0);
   opacity: 25%;
 }
 #searchBar-container i {
@@ -175,6 +208,16 @@ input:focus {
   font-size: 1.2em;
 }
 
+@media screen and (max-width: 480px) {
+  #searchBar-container i {
+    font-size: 0.8em;
+    left: 10px;
+  }
+}
+
+#searchBar-container i:hover {
+  color: rgb(225, 50, 50);
+}
 #advancedSelectedFilterTags-container {
   display: flex;
   flex-wrap: wrap;
@@ -183,10 +226,9 @@ input:focus {
   gap: 10px 15px;
   padding-bottom: 15px;
 }
-
 .advancedSelectedFilterTag {
   display: flex;
-  color: white;
+  color: rgb(255, 255, 255);
   padding: 10px 20px;
   align-items: center;
   border-radius: 5px;
@@ -198,22 +240,19 @@ input:focus {
 .advancedSelectedFilterTag button {
   border: none;
   background-color: unset;
-  color: white;
+  color: rgb(255, 255, 255);
 }
 .advancedSelectedFilterTag i {
   display: flex;
   padding-left: 15px;
   font-size: 20px;
 }
-
 #advancedFilters-container {
   padding-bottom: 25px;
 }
-
 menu {
   list-style: none;
 }
-
 div > menu {
   display: flex;
   list-style: none;
@@ -229,7 +268,7 @@ div > menu > li {
   position: relative;
 }
 div > menu > li > button {
-  color: white;
+  color: rgb(255, 255, 255);
   padding: 23px 60px 23px 20px;
   font-weight: 700;
   text-decoration: none;
@@ -237,6 +276,7 @@ div > menu > li > button {
   border-radius: 5px;
   text-align: left;
   position: relative;
+  cursor: pointer;
 }
 @media screen and (max-width: 600px) {
   div > menu > li > button {
@@ -255,13 +295,11 @@ div > menu > li > button > input {
 div > menu > li > button > span {
   line-height: 22px;
 }
-
 div > menu > li > button > input::placeholder {
   color: rgba(255, 255, 255, 0.677);
   font-weight: 400;
   width: fit-content;
 }
-
 div > menu > li > menu {
   display: flex;
   position: absolute;
@@ -272,7 +310,7 @@ div > menu > li > menu {
   flex-wrap: wrap;
   box-shadow: 0px 12px 12px 0px rgba(0, 0, 0, 0.2);
   z-index: 2;
-  color: white;
+  color: rgb(255, 255, 255);
   width: 100%;
   top: 65px;
   visibility: hidden;
@@ -281,6 +319,8 @@ div > menu > li > menu {
 }
 div > menu > li.active > menu {
   visibility: visible;
+  opacity: 1;
+  transition: visibility 0s 0.1s, opacity 0.3s ease;
 }
 div > menu > li.active > button > input {
   display: flex;
@@ -288,7 +328,6 @@ div > menu > li.active > button > input {
 div > menu > li.active > button > span {
   display: none;
 }
-
 div > menu > li > menu > li {
   width: 30%;
 }
@@ -302,25 +341,22 @@ div > menu > li > menu > li {
     width: 100%;
   }
 }
-
 div > menu > li > menu > li > button {
   background-color: transparent;
   text-align: left;
   border: none;
-  color: white;
+  color: rgb(255, 255, 255);
   padding: 2px;
   white-space: nowrap;
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 div > menu > li > menu > li > button:hover {
   background-color: rgba(255, 255, 255, 0.306);
   border-radius: 5px;
   padding: 2px;
 }
-
 div > menu > li > button:after {
   position: absolute;
   content: "";
@@ -331,25 +367,26 @@ div > menu > li > button:after {
   background: url(../assets/downarrow.svg);
   transform: rotate(180deg);
   z-index: 1;
+  transition: transform 0.2s ease;
 }
 div > menu > li.active > button:after {
-  transform: none;
+  transform: rotate(0deg);
+  transition: transform 0.2s ease;
 }
 
 /* ------------------ NO Result Recipes div ------------------ */
 #noResults {
   display: none;
-  margin: 1rem 0;
-  height: auto;
-  padding: 15px 0 15px 15px ;
-  border-radius: 5px;
-  background:  rgba(255, 166, 0, 0.699);
-  animation: opacity .2s ease-in-out;
+  justify-content: center;
+  align-items: center;
   width: 55%;
-  
-  
+  margin: 0 auto;
+  height: auto;
+  padding: 15px 0 15px 15px;
+  border-radius: 5px;
+  background: rgba(255, 166, 0, 0.699);
+  animation: opacity 0.2s ease-in-out;
 }
-
 @keyframes opacity {
   from {
     opacity: 0.1;
@@ -360,15 +397,14 @@ div > menu > li.active > button:after {
     transform: scaleY(11.125rem);
   }
 }
-/* ------------------ Result Recipes section ------------------ */
 
+/* ------------------ Result Recipes section ------------------ */
 #resultRecipes-container {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
   gap: 50px;
 }
-
 .recipe-card {
   width: calc((100% - 100px) / 3);
   border-radius: 5px;
@@ -384,52 +420,50 @@ div > menu > li.active > button:after {
     width: 100%;
   }
 }
-
 .card-img {
   width: 100%;
-  height: 210px;
-  padding: 2rem;
-  background-color: #c7bebe;
+  height: 250px;
   border-radius: 5px 5px 0 0;
+  object-fit: cover;
 }
-
 .recipe {
-    display: flex;
-    padding: 10px 15px;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 600;
+  display: flex;
+  padding: 10px 15px;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
 }
-
 .truncate {
-    width: 250px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-
 .timer {
-    width: 100px;
-    display: flex;
-    justify-content: space-around;
+  width: 100px;
+  display: flex;
+  justify-content: space-around;
 }
-
 .recipe__description__bottom {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 15px;
-    font-size: .95rem;
-    margin-bottom: 10%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 15px;
+  font-size: 0.95rem;
+  margin-bottom: 10%;
 }
 .ingredients-list {
-    width: 55%;
+  width: 65%;
+  line-height: 17px;
 }
 .ingredients-list__item {
-    font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 .f-w-400 {
-    font-weight: 400;
+  font-weight: 400;
 }
 .process {
-    width: 45%;
+  width: 35%;
+  font-size: 0.8rem;
+  line-height: 17px;
 }
