@@ -15,7 +15,7 @@
       src="https://kit.fontawesome.com/6995ef9b38.js"
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/main.css" />
   </head>
   <body class="container-sm">
     <header>
@@ -25,36 +25,36 @@
       <aside class="fd-message" id="message">
         <span>Aucun résultat</span>
       </aside>
-        <form id="search">
-            <div
-              class="searchBar"
-              id="searchBar-container"
-              data-error="Veuillez saisir au minimum 3 caractères"
-            >
-              <input
-                class="searchBar__input"
-                id="searchBar"
-                type="search"
-                placeholder="Rechercher une recette, un/des ingrédient(s), un appareil, ou un/des ustensile(s)"
-              />
-              <button type="submit" class="searchBar__icon">
-                <i class="fas fa-search"></i>
-              </button>
-            </div>
-    
-            <div id="searchTag-container">
-              <div id="advancedSelectedFilterTags-container"></div>
-    
-              <div id="advancedFilters-container">
-                <menu id="advancedFilters-list"></menu>
-              </div>
-            </div>
-          </form>
-    
-          <div id="noResults">
-            <p></p>
+      <form id="search">
+        <div
+          class="searchBar"
+          id="searchBar-container"
+          data-error="Veuillez saisir au minimum 3 caractères"
+        >
+          <input
+            class="searchBar__input"
+            id="searchBar"
+            type="search"
+            placeholder="Rechercher une recette, un/des ingrédient(s), un appareil, ou un/des ustensile(s)"
+          />
+          <button type="submit" class="searchBar__icon">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+
+        <div id="searchTag-container">
+          <div id="advancedSelectedFilterTags-container"></div>
+
+          <div id="advancedFilters-container">
+            <menu id="advancedFilters-list"></menu>
           </div>
-          <div id="resultRecipes-container"></div>
+        </div>
+      </form>
+
+      <div id="noResults">
+        <p></p>
+      </div>
+      <div id="resultRecipes-container"></div>
     </main>
     <footer></footer>
     <script type="module" src="./js/search.js"></script>
