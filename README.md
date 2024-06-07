@@ -16,6 +16,9 @@ Afin de tester la rapidité d'exécution des algorithmes de recherche, nous allo
 
 Nous choisirons ensuite la plus performante
 
+ * lien [JSBen](https://jsben.ch/5qD2o)
+ * lien [Fiche d'investigation](./ficheInvestigation.pdf)
+
 ## Livrables
 
 1. Une fiche d’investigation de fonctionnalité sur l’algorithme de recherche (format PDF). Vous y intégrerez le choix de l'algorithme définitif en comparaison à l’autre algorithme de recherche développé. 
