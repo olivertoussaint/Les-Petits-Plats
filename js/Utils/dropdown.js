@@ -1,15 +1,15 @@
-export function foldDropdown (elementMenu) {
+export function collapseDropdownMenu(elementMenu) {
   for (let i = 0; i < elementMenu.length; i++) {
-    elementMenu[i].classList.remove('active')
+    elementMenu[i].classList.remove("active");
   }
 }
-export function unfoldAndFoldDropdown (li, e, list) {
-  if (li.classList.contains('active') && (li.firstChild === e.target)) {
-    li.classList.remove('active')
+export function toggleDropdownItem(li, e, list) {
+  if (li.classList.contains("active") && li.firstChild === e.target) {
+    li.classList.remove("active");
   } else {
-    list.forEach(currentLi => { currentLi.classList.remove('active') })
-    li.classList.add('active')
+    list.forEach((currentLi) => {
+      currentLi.classList.remove("active");
+    });
+    li.classList.add("active");
   }
 }
-
-  
