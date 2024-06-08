@@ -9,8 +9,8 @@ const advancedFiltersMenu = document.getElementById("advancedFilters-list");
 // Fonction pour extraire les titres des listes (ingrédients, appareils, ustensiles) à partir du premier objet du tableau
 export function extractListTitles(array) {
   const listTitleIng = Object.keys(array[0])[4];
-  const listTitleApp = Object.keys(array[0])[8];
-  const listTitleUst = Object.keys(array[0])[7];
+  const listTitleApp = Object.keys(array[0])[7];
+  const listTitleUst = Object.keys(array[0])[8];
   const listTitles = [listTitleIng, listTitleApp, listTitleUst];
   return listTitles;
 }
