@@ -58,7 +58,7 @@ export function createFilterFactory() {
           return "Ingrédients";
         case "appliance":
           return "Appareil";
-        case "utensils":
+        case "ustensils":
           return "Ustensiles";
         default:
           return elt;
