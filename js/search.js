@@ -97,9 +97,9 @@ function removeTaggedItemsFromLists(tagsList) {
 }
 
 // affiche le tag cliqué dans le container de tag
-function displayTag(item, itemTittleList) {
+function displayTag(item, itemTitleList) {
   selectedTagContainer.appendChild(
-    createFilterFactory().getItemTagTemplate(item, itemTittleList)
+    createFilterFactory().getItemTagTemplate(item, itemTitleList)
   );
 }
 
@@ -145,19 +145,19 @@ function search() {
   dropdownFilterInputs.forEach((input) => {
     input.addEventListener("input", (event) => {
       event.preventDefault();
-      const listTittle = event.target.getAttribute("data-advanced-filter");
+      const listTitle = event.target.getAttribute("data-advanced-filter");
       const lists = filteredListsAdvancedField;
       const listFiltered = filterItemsByCategory(
         event.target.value,
-        listTittle,
+        listTitle,
         lists
       );
       const tittledMenuBlock = document.querySelector(
-        `menu #${listTittle}-list`
+        `menu #${listTitle}-list`
       );
       tittledMenuBlock.innerHTML = ""; // vide le menu des items
       listFiltered.map((item) =>
-        createFilterFactory().getListTemplate(item, listTittle)
+        createFilterFactory().getListTemplate(item, listTitle)
       ); // rempli le menu des items
     });
   });
@@ -215,19 +215,19 @@ function search() {
             li.firstChild.firstChild.nextSibling
           ) /* son input */
         ) {
-          const itemListTittle = e.target.getAttribute("data-advanced-filter");
+          const itemlistTitle = e.target.getAttribute("data-advanced-filter");
           const itemName = e.target.innerText;
-          tagsMap.set(itemName, itemListTittle);
+          tagsMap.set(itemName, itemlistTitle);
           selectedTagContainer.innerHTML = ""; // vide le container avant de le remplir
           tagsMap.forEach((itemTittL, ItM) => displayTag(ItM, itemTittL));
-          document.getElementById(`search-${itemListTittle}`).value = ""; // vide l'input
+          document.getElementById(`search-${itemlistTitle}`).value = ""; // vide l'input
           if (tagsMap.size === 1) {
             // il y a un tag sélectionné
             displayRecipes(
-              filterRecipesByField(itemName, arrayFromMainInput, itemListTittle)
+              filterRecipesByField(itemName, arrayFromMainInput, itemlistTitle)
             );
             filteredListsAdvancedField = renderItemsInDropdowns(
-              filterRecipesByField(itemName, arrayFromMainInput, itemListTittle)
+              filterRecipesByField(itemName, arrayFromMainInput, itemlistTitle)
             );
           } else if (tagsMap.size > 1) {
             // s'il y a plus de deux tags sélectionnés
