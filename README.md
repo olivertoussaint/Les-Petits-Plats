@@ -17,7 +17,7 @@ Afin de tester la rapidité d'exécution des algorithmes de recherche, nous allo
 Nous choisirons ensuite la plus performante
 
  * lien [JSBen](https://jsben.ch/5qD2o)
- * lien [Fiche d'investigation](./ficheInvestigation.pdf)
+ * lien [Fiche d'investigation](./Fiche%20d'investigation.pdf)
 
 ## Livrables
 
