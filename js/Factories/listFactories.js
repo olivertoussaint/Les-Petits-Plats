@@ -78,7 +78,7 @@ export function createFilterFactory() {
     divButtonSearchBar.setAttribute("id", `search-${element}`);
     divButtonSearchBar.setAttribute(
       "placeholder",
-      `Rechercher dans ${element}`
+      `Rechercher dans ${translate(element)}`
     );
     const menuBlock = document.createElement("menu");
     menuBlock.setAttribute("class", `${element}-color`);
